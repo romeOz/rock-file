@@ -1,0 +1,46 @@
+{
+    "name": "romeoz/rock-file",
+    "description": "[READ ONLY] File Manager module for Rock Framework",
+    "keywords": [
+        "filesystem", "file", "files", "storage", "dropbox", "aws",
+        "s3", "ftp", "sftp", "remote", "webdav", "file systems", "cloud",
+        "cloud files", "rackspace", "copy.com"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "support": {
+        "email": "serggalka@gmail.com",
+        "issues": "https://github.com/romeOz/rock-file/issues",
+        "source": "https://github.com/romeOz/rock-file"
+    },
+    "authors": [
+        {
+            "name": "Ruslan",
+            "email": "serggalka@gmail.com"
+        }
+    ],
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/romeOz/rock-base"
+    }],
+    "require": {
+        "php": ">=5.4.0",
+        "romeoz/rock-base" : "*@dev",
+        "romeoz/rock-helpers" : "*@dev",
+        "romeoz/rock-events" : "*@dev",
+        "league/flysystem": "0.5.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "rock\\file\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
