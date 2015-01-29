@@ -14,6 +14,11 @@ class FileManagerWithMemcachedTest extends FileManagerTest
 {
     protected function setUp()
     {
+        if (!class_exists('\Memcached')) {
+            $this->markTestSkipped(
+                'The \Memcached is not available.'
+            );
+        }
         $memcached = new \Memcached();
         $memcached->addServer('localhost', 11211);
         $config = [
