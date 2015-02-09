@@ -257,9 +257,9 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
         $this->fileManager->deleteAll();
         $this->assertTrue($this->fileManager->write('foo.tmp', 'foo'));
         $this->assertTrue($this->fileManager->write('test/bar.tmp', 'bar'));
-        $this->assertSame($this->fileManager->getWithMetadata('foo.tmp', [FileManager::META_MIMETYPE])["mimetype"], 'text/plain');
+        $this->assertSame('text/plain', $this->fileManager->getWithMetadata('foo.tmp', [FileManager::META_MIMETYPE])["mimetype"]);
         $this->assertFalse($this->fileManager->getWithMetadata('test/foo', [FileManager::META_MIMETYPE]));
-        $this->assertSame($this->fileManager->getWithMetadata('~/bar\.tmp$/', [FileManager::META_MIMETYPE])["mimetype"], 'text/plain');
+        $this->assertSame('text/plain', $this->fileManager->getWithMetadata('~/bar\.tmp$/', [FileManager::META_MIMETYPE])["mimetype"]);
         $this->assertFalse($this->fileManager->getWithMetadata('~/baz\.tmp$/', [FileManager::META_MIMETYPE]));
     }
 
@@ -267,9 +267,11 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->fileManager->write('foo.tmp', 'foo'));
         $this->assertTrue($this->fileManager->write('test/bar.tmp', 'bar'));
-        $this->assertSame($this->fileManager->getMetadata('foo.tmp')["type"], 'file');
+        $this->assertSame('file', $this->fileManager->getMetadata('foo.tmp')["type"]);
+        $this->assertSame('foo.tmp', $this->fileManager->getMetadata('foo.tmp')['basename']);
         $this->assertFalse($this->fileManager->getMetadata('test/foo'));
-        $this->assertSame($this->fileManager->getMetadata('~/bar\.tmp$/')["type"], 'file');
+        $this->assertSame('file', $this->fileManager->getMetadata('~/bar\.tmp$/')["type"]);
+        $this->assertSame('bar.tmp', $this->fileManager->getMetadata('~/bar\.tmp$/')['basename']);
         $this->assertFalse($this->fileManager->getMetadata('~/baz\.tmp$/'));
     }
 

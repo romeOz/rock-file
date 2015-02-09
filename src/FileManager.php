@@ -299,9 +299,17 @@ class FileManager extends Filesystem implements ObjectInterface
         if (StringHelper::isRegexp($path) && (!$path = $this->searchByPattern($path))) {
             return false;
         }
-
         try {
-            return parent::getMetadata($path);
+            if ($metadata = parent::getMetadata($path)) {
+                if (!isset($metadata['dirname'])) {
+                    $metadata['dirname'] = dirname($metadata['path']);
+                }
+                if (!isset($metadata['basename'])) {
+                    $metadata['basename'] = basename($metadata['path']);
+                }
+            }
+
+            return $metadata;
         } catch (\Exception $e) {
             $this->errors[] = $e->getMessage();
         }
