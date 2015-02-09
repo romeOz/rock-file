@@ -2,8 +2,12 @@
 namespace rock\file;
 
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\CacheInterface;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\CacheInterface;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Plugin\GetWithMetadata;
+use League\Flysystem\Plugin\ListPaths;
+use League\Flysystem\Plugin\ListWith;
 use rock\base\ObjectInterface;
 use rock\base\ObjectTrait;
 use rock\helpers\ArrayHelper;
@@ -21,6 +25,8 @@ class FileManager extends Filesystem implements ObjectInterface
     const META_TIMESTAMP = 'timestamp';
     const META_MIMETYPE = 'mimetype';
 
+    /** @var  CacheInterface */
+    public $cache;
     protected $errors = [];
 
     /**
@@ -32,7 +38,12 @@ class FileManager extends Filesystem implements ObjectInterface
         if ($this->cache instanceof CacheInterface) {
             $this->cache->save();
         }
-        parent::__construct($this->adapter, $this->cache, $this->config);
+        $decoratedAdapter = new CachedAdapter($this->adapter, $this->cache);
+        parent::__construct($decoratedAdapter, $this->config);
+        $this->addPlugin(new ListPaths());
+        $this->addPlugin(new ListWith());
+        $this->addPlugin(new GetWithMetadata());
+
     }
 
     public function setAdapter(AdapterInterface $adapter)
@@ -127,7 +138,7 @@ class FileManager extends Filesystem implements ObjectInterface
      * @param  mixed               $config
      * @return boolean             success boolean
      */
-    public function write($path, $contents, $config = null)
+    public function write($path, $contents, array $config = [])
     {
         try {
             return parent::write($path, $contents, $config);
@@ -137,7 +148,7 @@ class FileManager extends Filesystem implements ObjectInterface
         return false;
     }
 
-    public function writeStream($path, $resource, $config = null)
+    public function writeStream($path, $resource, array $config = [])
     {
         try {
             return parent::writeStream($path, $resource, $config);
@@ -150,7 +161,7 @@ class FileManager extends Filesystem implements ObjectInterface
     /**
      * @inheritdoc
      */
-    public function update($path, $contents, $config = null)
+    public function update($path, $contents, array $config = [])
     {
         try {
             return parent::update($path, $contents, $config);
@@ -163,7 +174,7 @@ class FileManager extends Filesystem implements ObjectInterface
     /**
      * @inheritdoc
      */
-    public function updateStream($path, $resource, $config = null)
+    public function updateStream($path, $resource, array $config = [])
     {
         try {
             return parent::updateStream($path, $resource, $config);
@@ -245,6 +256,10 @@ class FileManager extends Filesystem implements ObjectInterface
         } catch (\Exception $e) {
             $this->errors[] = $e->getMessage();
             return false;
+        }
+
+        if (!is_array($metadata)) {
+            $metadata = [];
         }
 
         return $this->rename($path, StringHelper::replace($newpath, array_merge($metadata, $dataReplace)));

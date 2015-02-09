@@ -3,7 +3,7 @@
 namespace rockunit;
 
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\Cache\Adapter;
+use League\Flysystem\Cached\Storage\Adapter;
 use rock\file\FileManager;
 use rockunit\common\CommonTestTrait;
 
@@ -106,12 +106,14 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->fileManager->write('foo.tmp', 'foo'));
         $this->assertTrue($this->fileManager->write('bar.tmp', ''));
+
+
         $this->assertTrue($this->fileManager->updateStream('bar.tmp', $this->fileManager->readStream('foo.tmp')));
         $this->assertTrue($this->fileManager->has('foo.tmp'));
         $this->assertTrue($this->fileManager->has('bar.tmp'));
-        $this->assertSame($this->fileManager->read('bar.tmp'), 'foo');
+        $this->assertSame(stream_get_contents($this->fileManager->readStream('bar.tmp')), 'foo');
         $this->assertTrue($this->fileManager->delete('bar.tmp'));
-        $this->assertTrue($this->fileManager->write('bar.tmp', '', FileManager::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->fileManager->write('bar.tmp', '', ['visibility' => Local::VISIBILITY_PRIVATE]));
         $this->assertFalse($this->fileManager->updateStream('baz.tmp', $this->fileManager->readStream('foo.tmp')));
     }
 
@@ -294,12 +296,12 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
     public function testVisibility()
     {
         $this->assertTrue($this->fileManager->write('foo.tmp', 'foo'));
-        $this->assertSame($this->fileManager->getVisibility('foo.tmp'), FileManager::VISIBILITY_PUBLIC);
+        $this->assertSame(Local::VISIBILITY_PUBLIC, $this->fileManager->getVisibility('foo.tmp'));
         $this->assertFalse($this->fileManager->getVisibility('baz.tmp'));
         $this->fileManager->deleteAll();
-        $this->assertTrue($this->fileManager->write('foo.tmp', 'foo', ['visibility' => FileManager::VISIBILITY_PRIVATE]));
-        $this->assertSame($this->fileManager->getVisibility('foo.tmp'), FileManager::VISIBILITY_PRIVATE);
-        $this->assertSame($this->fileManager->getVisibility('~/foo\.tmp$/'), FileManager::VISIBILITY_PRIVATE);
+        $this->assertTrue($this->fileManager->write('foo.tmp', 'foo', ['visibility' => Local::VISIBILITY_PRIVATE]));
+        $this->assertSame(Local::VISIBILITY_PRIVATE, $this->fileManager->getVisibility('foo.tmp'));
+        $this->assertSame(Local::VISIBILITY_PRIVATE, $this->fileManager->getVisibility('~/foo\.tmp$/'));
         $this->assertFalse($this->fileManager->getVisibility('~/baz\.tmp$/'));
     }
 
@@ -337,6 +339,7 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
     protected static function getFileManagerWithLocalCache()
     {
         $local = new Local(ROCKUNIT_RUNTIME );
+
         $config = [
             'adapter' => new Local(ROCKUNIT_RUNTIME . '/filesystem'),
             'cache' => new Adapter($local, 'filesystem.tmp')
@@ -350,7 +353,7 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
         $memcached->addServer('localhost', 11211);
         $memcached->flush();
         static::getFileManagerWithLocalCache()->deleteAll();
-        static::getFileManagerWithLocalCache()->flushCache();
+        static::getFileManagerWithLocalCache()->cache->flush();
         static::clearRuntime();
     }
 }

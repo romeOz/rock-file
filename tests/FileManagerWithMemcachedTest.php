@@ -3,8 +3,8 @@
 namespace rockunit;
 
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\Cached\Storage\Memcached;
 use rock\file\FileManager;
-use League\Flysystem\Cache\Memcached;
 
 /**
  * @group base
