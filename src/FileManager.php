@@ -37,9 +37,10 @@ class FileManager extends Filesystem implements ObjectInterface
         $this->parentConstruct($config);
         if ($this->cache instanceof CacheInterface) {
             $this->cache->save();
+            $this->adapter = new CachedAdapter($this->adapter, $this->cache);
         }
-        $decoratedAdapter = new CachedAdapter($this->adapter, $this->cache);
-        parent::__construct($decoratedAdapter, $this->config);
+
+        parent::__construct($this->adapter, $this->config);
         $this->addPlugin(new ListPaths());
         $this->addPlugin(new ListWith());
         $this->addPlugin(new GetWithMetadata());
