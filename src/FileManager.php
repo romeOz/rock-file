@@ -11,6 +11,7 @@ use League\Flysystem\Plugin\ListWith;
 use rock\base\ObjectInterface;
 use rock\base\ObjectTrait;
 use rock\helpers\ArrayHelper;
+use rock\helpers\FileHelper;
 use rock\helpers\StringHelper;
 
 class FileManager extends Filesystem implements ObjectInterface
@@ -303,10 +304,10 @@ class FileManager extends Filesystem implements ObjectInterface
         try {
             if ($metadata = parent::getMetadata($path)) {
                 if (!isset($metadata['dirname'])) {
-                    $metadata['dirname'] = dirname($metadata['path']);
+                    $metadata['dirname'] = FileHelper::dirname($metadata['path']);
                 }
                 if (!isset($metadata['basename'])) {
-                    $metadata['basename'] = basename($metadata['path']);
+                    $metadata['basename'] = FileHelper::basename($metadata['path']);
                 }
             }
 
