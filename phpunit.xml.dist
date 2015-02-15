@@ -23,6 +23,7 @@
         <blacklist>
             <file>./src/FileException.php</file>
             <file>./src/UploadedFile.php</file>
+            <directory>./tests/</directory>
         </blacklist>
     </filter>
     <logging>
