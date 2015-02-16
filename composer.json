@@ -21,8 +21,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "romeoz/rock-helpers" : "*@dev",
-        "romeoz/rock-events" : "*@dev",
+        "romeoz/rock-helpers" : "0.10.*",
+        "romeoz/rock-events" : "0.10.*",
         "league/flysystem": "1.0.*",
         "league/flysystem-cached-adapter": "1.0.*"
     },
@@ -39,7 +39,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.9-dev"
+            "dev-master": "0.10-dev"
         }
     }
 }
