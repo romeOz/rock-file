@@ -1,6 +1,6 @@
 {
     "name": "romeoz/rock-file",
-    "description": "[READ ONLY] File Manager module for Rock Framework",
+    "description": "File Manager module for Rock Framework",
     "keywords": [
         "filesystem", "file", "files", "storage", "dropbox", "aws",
         "s3", "ftp", "sftp", "remote", "webdav", "file systems", "cloud",
