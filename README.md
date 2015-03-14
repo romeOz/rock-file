@@ -1,6 +1,8 @@
 File Manager module for [Rock Framework](https://github.com/romeOz/rock)
 =================
 
+Abstraction over the [thephpleague/flysystem](https://github.com/thephpleague/flysystem).
+
 [![Build Status](https://travis-ci.org/romeOz/rock-file.svg?branch=master)](https://travis-ci.org/romeOz/rock-file)
 [![Coverage Status](https://coveralls.io/repos/romeOz/rock-file/badge.svg?branch=master)](https://coveralls.io/r/romeOz/rock-file?branch=master)
 
