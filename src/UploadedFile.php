@@ -211,15 +211,6 @@ class UploadedFile implements EventsInterface
     }
 
     /**
-     * Cleans up the loaded UploadedFile instances.
-     * This method is mainly used by test scripts to set up a fixture.
-     */
-    public function reset()
-    {
-        self::$_files = null;
-    }
-
-    /**
      * Saves the uploaded file.
      * Note that this method uses php's move_uploaded_file() method. If the target file `$file`
      * already exists, it will be overwritten.
@@ -340,5 +331,15 @@ class UploadedFile implements EventsInterface
         }
         unset($config['class']);
         return new static($config);
+    }
+
+    /**
+     * Cleans up the loaded UploadedFile instances.
+     * This method is mainly used by test scripts to set up a fixture.
+     * @param bool $autoreset
+     */
+    public function reset($autoreset = false)
+    {
+        self::$_files = null;
     }
 }
