@@ -92,7 +92,7 @@ class FileManager extends Filesystem implements ObjectInterface
     /**
      * Read and delete a file.
      *
-     * @param   string  $path
+     * @param   string $path
      * @return  string|false  file contents
      */
     public function readAndDelete($path)
@@ -118,7 +118,7 @@ class FileManager extends Filesystem implements ObjectInterface
      * ```
      *
      * @param  string $path path to check or regexp pattern
-     * @param null    $is
+     * @param null $is
      * @return boolean whether the path exists
      */
     public function has($path, $is = null)
@@ -135,9 +135,9 @@ class FileManager extends Filesystem implements ObjectInterface
     /**
      * Write a file
      *
-     * @param  string              $path     path to file
-     * @param  string              $contents file contents
-     * @param  mixed               $config
+     * @param  string $path path to file
+     * @param  string $contents file contents
+     * @param  mixed $config
      * @return boolean             success boolean
      */
     public function write($path, $contents, array $config = [])
@@ -254,7 +254,7 @@ class FileManager extends Filesystem implements ObjectInterface
     public function renameByMask($path, $newpath, array $dataReplace = [])
     {
         try {
-            $metadata = parent::getWithMetadata($path, ['timestamp','mimetype']);
+            $metadata = parent::getWithMetadata($path, ['timestamp', 'mimetype']);
         } catch (\Exception $e) {
             $this->errors[] = $e->getMessage();
             return false;
@@ -270,8 +270,8 @@ class FileManager extends Filesystem implements ObjectInterface
     /**
      * Copy a file
      *
-     * @param   string  $path
-     * @param   string  $newpath
+     * @param   string $path
+     * @param   string $newpath
      * @return  boolean
      */
     public function copy($path, $newpath)
@@ -327,7 +327,7 @@ class FileManager extends Filesystem implements ObjectInterface
      * ```
      *
      * @param  string $path path to file or regexp pattern
-     * @param   array   $metadata  metadata keys
+     * @param   array $metadata metadata keys
      * @return  array|false   metadata
      */
     public function getWithMetadata($path, array $metadata)
@@ -460,9 +460,9 @@ class FileManager extends Filesystem implements ObjectInterface
      * listContents('~/foo$/')
      * ```
      *
-     * @param  string  $directory
+     * @param  string $directory
      * @param boolean $recursive
-     * @param null     $is
+     * @param null $is
      * @return array    contents
      */
     public function listContents($directory = '', $recursive = false, $is = null)
@@ -478,7 +478,7 @@ class FileManager extends Filesystem implements ObjectInterface
         return isset($is)
             ? array_filter(
                 $result,
-                function($value) use ($is){
+                function ($value) use ($is) {
                     return $value['type'] === $is;
                 }
             )
@@ -489,8 +489,8 @@ class FileManager extends Filesystem implements ObjectInterface
      * List all paths.
      *
      * @param string $directory
-     * @param bool   $recursive
-     * @param null   $is
+     * @param bool $recursive
+     * @param null $is
      * @return  array  paths
      */
     public function listPaths($directory = '', $recursive = false, $is = null)
@@ -518,10 +518,10 @@ class FileManager extends Filesystem implements ObjectInterface
     /**
      * List contents with metadata.
      *
-     * @param array  $keys metadata keys
+     * @param array $keys metadata keys
      * @param string $directory
-     * @param bool   $recursive
-     * @param null   $is
+     * @param bool $recursive
+     * @param null $is
      * @return  array            listing with metadata
      */
     public function listWith(array $keys = [], $directory = '', $recursive = false, $is = null)
@@ -536,7 +536,7 @@ class FileManager extends Filesystem implements ObjectInterface
         return isset($is)
             ? array_filter(
                 $result,
-                function($value) use ($is){
+                function ($value) use ($is) {
                     return $value['type'] === $is;
                 }
             )
@@ -578,7 +578,7 @@ class FileManager extends Filesystem implements ObjectInterface
 
     protected function searchDirByPattern($pattern, $recursive = false, $is = null)
     {
-        $result =[];
+        $result = [];
         foreach (parent::listContents('', $recursive) as $data) {
             if (isset($is) && isset($data['type']) && $data['type'] !== $is) {
                 continue;
@@ -593,7 +593,7 @@ class FileManager extends Filesystem implements ObjectInterface
 
     protected function searchFilesWithByPattern(array $keys = [], $pattern, $recursive = false, $is = null)
     {
-        $result =[];
+        $result = [];
         foreach (parent::listWith($keys, '', $recursive) as $data) {
             if (isset($is) && $data['type'] !== $is) {
                 continue;

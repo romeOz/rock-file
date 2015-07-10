@@ -107,8 +107,8 @@ class UploadedFile implements EventsInterface
      * Returns an uploaded file for the given model attribute.
      * The file should be uploaded using {@see \rock\widgets\ActiveField::fileInput()}.
      *
-     * @param \rock\components\Model $model     the data model
-     * @param string                 $attribute the attribute name. The attribute name may contain array indexes.
+     * @param \rock\components\Model $model the data model
+     * @param string $attribute the attribute name. The attribute name may contain array indexes.
      *                                          For example, '[1]file' for tabular file uploading; and 'file[1]' for an element in a file array.
      * @return UploadedFile the instance of the uploaded file.
      *                                          Null is returned if no file is uploaded for the specified model attribute.
@@ -128,8 +128,8 @@ class UploadedFile implements EventsInterface
     /**
      * Returns all uploaded files for the given model attribute.
      *
-     * @param \rock\components\Model $model     the data model
-     * @param string                 $attribute the attribute name. The attribute name may contain array indexes
+     * @param \rock\components\Model $model the data model
+     * @param string $attribute the attribute name. The attribute name may contain array indexes
      *                                          for tabular file uploading, e.g. '[1]file'.
      * @return UploadedFile[] array of UploadedFile objects.
      *                                          Empty array is returned if no available file was found for the given attribute.
@@ -193,7 +193,7 @@ class UploadedFile implements EventsInterface
      * @param int|null $maxSize
      * @return integer the size limit for uploaded files.
      */
-    public static  function getSizeLimit($maxSize = null)
+    public static function getSizeLimit($maxSize = null)
     {
         $limit = FileHelper::sizeToBytes(ini_get('upload_max_filesize'));
         if ($maxSize !== null) {
@@ -204,7 +204,7 @@ class UploadedFile implements EventsInterface
         }
 
         if (isset($_POST['MAX_FILE_SIZE']) && $_POST['MAX_FILE_SIZE'] > 0 && $_POST['MAX_FILE_SIZE'] < $limit) {
-            $limit = (int) $_POST['MAX_FILE_SIZE'];
+            $limit = (int)$_POST['MAX_FILE_SIZE'];
         }
 
         return $limit;
@@ -215,10 +215,10 @@ class UploadedFile implements EventsInterface
      * Note that this method uses php's move_uploaded_file() method. If the target file `$file`
      * already exists, it will be overwritten.
      *
-     * @param string  $file           the file path used to save the uploaded file
+     * @param string $file the file path used to save the uploaded file
      * @param boolean $deleteTempFile whether to delete the temporary file after saving.
      *                                If true, you will not be able to save the uploaded file again in the current request.
-     * @param bool    $createDir
+     * @param bool $createDir
      * @return bool true whether the file is saved successfully
      * @throws \Exception
      * @see error

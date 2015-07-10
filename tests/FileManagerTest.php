@@ -204,8 +204,8 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->fileManager->write('foo.tmp', 'foo'));
         $this->assertTrue($this->fileManager->write('test/bar.tmp', 'bar'));
 
-        $this->assertSame(static::sort($this->fileManager->listPaths()), static::sort(['foo.tmp','test']));
-        $this->assertSame(static::sort($this->fileManager->listPaths('', true)), static::sort(['foo.tmp','test', 'test/bar.tmp']));
+        $this->assertSame(static::sort($this->fileManager->listPaths()), static::sort(['foo.tmp', 'test']));
+        $this->assertSame(static::sort($this->fileManager->listPaths('', true)), static::sort(['foo.tmp', 'test', 'test/bar.tmp']));
         $this->assertSame($this->fileManager->listPaths('', true, FileManager::TYPE_DIR), ['test']);
         $this->assertSame(static::sort($this->fileManager->listPaths('', true, FileManager::TYPE_FILE)), static::sort(['foo.tmp', 'test/bar.tmp']));
         $this->assertSame(count($this->fileManager->listPaths('test')), 1);
@@ -222,12 +222,12 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('timestamp', $this->fileManager->listWith([FileManager::META_TIMESTAMP])[0]);
         $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP])), 2);
         $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP], 'test')), 1);
-        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP],'test/foo')), 0);
+        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP], 'test/foo')), 0);
 
-        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP],'', true)), 3);
-        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP],'', true, FileManager::TYPE_DIR)), 1);
-        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP],'~/bar\.tmp$/', true, FileManager::TYPE_FILE)), 1);
-        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP],'~/bar\.tmp$/')), 0);
+        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP], '', true)), 3);
+        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP], '', true, FileManager::TYPE_DIR)), 1);
+        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP], '~/bar\.tmp$/', true, FileManager::TYPE_FILE)), 1);
+        $this->assertSame(count($this->fileManager->listWith([FileManager::META_TIMESTAMP], '~/bar\.tmp$/')), 0);
     }
 
     public function testGetTimestamp()
@@ -340,7 +340,7 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
 
     protected static function getFileManagerWithLocalCache()
     {
-        $local = new Local(ROCKUNIT_RUNTIME );
+        $local = new Local(ROCKUNIT_RUNTIME);
 
         $config = [
             'adapter' => new Local(ROCKUNIT_RUNTIME . '/filesystem'),
