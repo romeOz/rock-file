@@ -88,7 +88,7 @@ abstract class FileManagerTest extends \PHPUnit_Framework_TestCase
 
         // repeat write fail
         $this->assertFalse($this->fileManager->writeStream('0', $this->fileManager->readStream('test.tmp')));
-        $this->fileManager->deleteAll();
+        $this->assertTrue($this->fileManager->delete('0'));
     }
 
 
